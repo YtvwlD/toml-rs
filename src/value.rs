@@ -1,12 +1,24 @@
 //! Definition of a TOML value
 
-use std::collections::{BTreeMap, HashMap};
-use std::fmt;
-use std::hash::Hash;
-use std::mem::discriminant;
-use std::ops;
-use std::str::FromStr;
-use std::vec;
+use alloc::collections::BTreeMap;
+use alloc::vec;
+use core::fmt;
+use core::hash::Hash;
+use core::mem::discriminant;
+use core::ops;
+use core::str::FromStr;
+use hashbrown::HashMap;
+
+#[cfg(not(feature = "std"))]
+use alloc::borrow::ToOwned;
+#[cfg(not(feature = "std"))]
+use alloc::format;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::string::ToString;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 use serde::de;
 use serde::de::IntoDeserializer;

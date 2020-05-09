@@ -25,11 +25,18 @@
 //! # fn main() {}
 //! ```
 
-use std::cell::Cell;
+use alloc::rc::Rc;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::string::ToString;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
+use core::cell::Cell;
+use core::fmt::{self, Write};
+use core::marker;
+#[cfg(feature = "std")]
 use std::error;
-use std::fmt::{self, Write};
-use std::marker;
-use std::rc::Rc;
 
 use crate::datetime;
 use serde::ser;
@@ -1542,6 +1549,7 @@ impl fmt::Display for Error {
     }
 }
 
+#[cfg(feature = "std")]
 impl error::Error for Error {}
 
 impl ser::Error for Error {
