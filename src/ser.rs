@@ -755,7 +755,7 @@ impl<'a> Serializer<'a> {
 }
 
 macro_rules! serialize_float {
-    ($this:expr, $v:expr) => {{
+    ($this:expr, $v:expr, $T:ty) => {{
         $this.emit_key(ArrayState::Started)?;
         if ($v.is_nan() || $v == 0.0) && $v.is_sign_negative() {
             write!($this.dst, "-").map_err(ser::Error::custom)?;
@@ -765,7 +765,7 @@ macro_rules! serialize_float {
         } else {
             write!($this.dst, "{}", $v).map_err(ser::Error::custom)?;
         }
-        if $v % 1.0 == 0.0 {
+        if $v == ($v as i64) as $T {
             write!($this.dst, ".0").map_err(ser::Error::custom)?;
         }
         if let State::Table { .. } = $this.state {
@@ -823,11 +823,11 @@ impl<'a, 'b> ser::Serializer for &'b mut Serializer<'a> {
     }
 
     fn serialize_f32(self, v: f32) -> Result<(), Self::Error> {
-        serialize_float!(self, v)
+        serialize_float!(self, v, f32)
     }
 
     fn serialize_f64(self, v: f64) -> Result<(), Self::Error> {
-        serialize_float!(self, v)
+        serialize_float!(self, v, f64)
     }
 
     fn serialize_char(self, v: char) -> Result<(), Self::Error> {
