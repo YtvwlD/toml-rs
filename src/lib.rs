@@ -156,6 +156,8 @@
 #![cfg_attr(all(not(test), not(feature = "std")), no_std)]
 
 extern crate alloc;
+#[cfg(not(feature = "alloc"))]
+compile_error!("at least the 'alloc' feature is currently required");
 
 pub mod map;
 pub mod value;
