@@ -21,7 +21,10 @@ use core::fmt;
 use core::iter;
 use core::marker::PhantomData;
 use core::str;
+#[cfg(not(feature = "std"))]
 use hashbrown::HashMap;
+#[cfg(feature = "std")]
+use std::collections::HashMap;
 #[cfg(feature = "std")]
 use std::error;
 

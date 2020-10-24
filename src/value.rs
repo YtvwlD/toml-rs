@@ -7,7 +7,10 @@ use core::hash::Hash;
 use core::mem::discriminant;
 use core::ops;
 use core::str::FromStr;
+#[cfg(not(feature = "std"))]
 use hashbrown::HashMap;
+#[cfg(feature = "std")]
+use std::collections::HashMap;
 
 #[cfg(not(feature = "std"))]
 use alloc::borrow::ToOwned;
